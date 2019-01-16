@@ -3,6 +3,7 @@
     <Header></Header>
     <div class="main">
       <router-view name="main"></router-view>
+      <router-view name="SlideBar"></router-view>
     </div>
 
   </div>
@@ -23,7 +24,9 @@ export default {
 
 <style>
 .main{
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
+  display: flex;
+
 }
 </style>

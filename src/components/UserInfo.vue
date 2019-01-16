@@ -1,5 +1,5 @@
 <template>
-    <UserInfo>
+    <div class="userInfo">
       <div class="loading" v-if="isloading">
         <img src="../assets/loading.gif" alt="下载中">
       </div>
@@ -14,8 +14,34 @@
             注册时间{{userinfo.create_at|formDate}}
           </p>
         </section>
+        <div class="replies">
+          <p>回复的主题</p>
+          <ul>
+            <li v-for=" item in userinfo.recent_replies">
+              <router-link :to="{
+              name:'post_content',
+              params:{id:item.id}
+              }">
+                {{item.title}}
+              </router-link>
+            </li>
+          </ul>
+        </div>
+        <div class="topics">
+          <p>创建的主题</p>
+          <ul>
+            <li v-for="item in userinfo.recent_topics">
+              <router-link :to="{
+              name:'post_content',
+              params:{id:item.id}
+              }">
+                {{item.title}}
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
-    </UserInfo>
+    </div>
 </template>
 
 <script>
@@ -28,7 +54,7 @@
           }
       },
       methods:{
-          UserGetData(){
+          getData(){
             this.$http.get(`https://cnodejs.org/api/v1/user/${this.$route.params.name}`)
               .then(res=>{
                 console.log(1)
@@ -42,10 +68,13 @@
       beforeMount() {
           this.isloading=true
           console.log(2)
+        this.getData()
       }
     }
 </script>
 
 <style scoped>
-
+img {
+  width: 30px;
+}
 </style>

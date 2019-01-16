@@ -39,7 +39,8 @@
             <router-link :to="{
             name:'post_content',
             params:{
-             id:post.id
+             id:post.id,
+             name:post.author.loginname
             }
             }">
               <div class="title">
@@ -52,38 +53,52 @@
               {{post.last_reply_at|formDate}}
             </span>
           </li>
+          <li>
+            <!--分页-->
+            <Pagination @handleList="renderList"></Pagination>
+          </li>
         </ul>
       </div>
     </div>
 </template>
 
 <script>
+  import Pagination from './Pagination'
     export default {
       name: "PostList",
       data (){
         return {
           isLoading:false,//加载成功去除动画
-          posts:[]//代表页面中的数组
+          posts:[],//代表页面中的数组
+          postpage:1
         }
       },
-      computed:{
-
+      components:{
+        Pagination
       },
       filters:{
 
       },
       methods:{
+        renderList(value){
+          console.log('重新渲染');
+          console.log(value);
+          this.postpage=value
+          this.getData()
+        },
         getData(){
           this.$http.get('https://cnodejs.org/api/v1/topics',{
-            page:1,
-            limit:20
+            params:{
+              page:this.postpage,
+              limit:20
+            }
           })
             .then(res=>{
               this.isLoading =false
               this.posts=res
-              console.log(res)
+             // console.log(res)
               this.posts=res.data.data
-              console.log(this.posts)
+              // console.log(this.posts)
             }).catch(err=>{console.log(err)})
         }
       },

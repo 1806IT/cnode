@@ -60,7 +60,7 @@
           getArticleData(){
             this.$http.get(`https://cnodejs.org/api/v1/topic/${this.$route.params.id}`)
               .then(res=>{
-                console.log(res)
+                // console.log(res)
                 this.isLoading=false
                 if(res.data.success)
                 {this.post=res.data.data}
@@ -71,6 +71,11 @@
       beforeMount() {
           this.isLoading=true
           this.getArticleData()
+      },
+      watch:{
+          '$route'(to,from){
+            this.getArticleData()
+          }
       }
     }
 </script>
